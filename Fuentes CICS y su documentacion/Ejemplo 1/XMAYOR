@@ -1,0 +1,121 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. XMAYOR.
+       AUTHOR. H.GAYAN.
+       DATE-WRITTEN. DIC-2013.
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 REG-VENTAS.
+         02 REG-VEN.
+            03 CLAVES PIC X(6).
+            03 FILLER PIC X(22).
+          02 TODO REDEFINES REG-VEN.
+            03 FVEN-CVENTAS PIC 9(6).
+            03 FVEN-CVENDEDOR PIC 9999.
+            03 FVEN-CPRODUCTO PIC 9999.
+            03 FVEN-FECHA PIC 9(8).
+            03 FVEN-KILOS PIC 9(6).
+       77 WS-INPUTMSG PIC X(13) VALUE 'CESF LOGOFF'.
+       77 WVEN-CVENTAS  PIC X(6) VALUE HIGH-VALUES.
+       COPY MMAYOR.
+       COPY DFHAID.
+       COPY DFHBMSCA.
+
+       01  COMMAREA.
+           02 CVEN-CVENTAS PIC 9(6).
+           02 CVEN-CVENDEDOR PIC 9(4).
+           02 CVEN-CPRODUCTO PIC 9(4).
+           02 CVEN-FECHA PIC 9(8).
+           02 CVEN-KILOS PIC 9(6).
+       LINKAGE SECTION.
+       01  DFHCOMMAREA  PIC X(28).
+       PROCEDURE DIVISION.
+       INICIO.
+           MOVE DFHCOMMAREA TO COMMAREA
+           MOVE LOW-VALUES TO MAP1O
+           IF EIBCALEN = 0
+            PERFORM PRIMER-REGISTRO
+            PERFORM MOVER-CAMPOS
+            PERFORM ENVIAR-MAPA
+           END-IF
+           MOVE DFHCOMMAREA TO COMMAREA
+           EVALUATE  EIBAID
+                WHEN DFHPF3
+                    EXEC CICS  RETURN TRANSID('CESF')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF4
+                    MOVE 'CESN CICSUSER' TO WS-INPUTMSG
+                    EXEC CICS  RETURN TRANSID('CESN')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF5
+                     PERFORM ULTIMO-REGISTRO
+                     PERFORM MOVER-CAMPOS
+                     PERFORM ENVIAR-MAPA
+                WHEN OTHER
+                PERFORM MOVER-CAMPOS
+                    PERFORM ENVIAR-MAPA
+            END-EVALUATE.
+
+        RECIBIR-MAPA.
+            EXEC CICS RECEIVE MAP('MAP1')
+                                MAPSET('MMAYOR')
+                                INTO(MAP1I)
+                                END-EXEC.
+        ENVIAR-MAPA.
+                 EXEC CICS SEND MAP('MAP1')
+                                MAPSET('MMAYOR')
+                                  FROM(MAP1O)
+                                  ERASE
+                                  ALARM
+                                  CURSOR
+                                  FREEKB
+                                  END-EXEC
+                     EXEC CICS RETURN TRANSID('MA00')
+                         COMMAREA(COMMAREA)
+                         LENGTH(28)
+                                END-EXEC.
+        PRIMER-REGISTRO.
+           MOVE 1 TO FVEN-CVENTAS
+           EXEC CICS READ DATASET('VENTAS')
+                       INTO (REG-VENTAS)
+                       GTEQ
+                       NOHANDLE
+                       RIDFLD (FVEN-CVENTAS)
+                       END-EXEC
+           IF EIBRESP > 0 AND NOT = 15
+             IF EIBRESP = 13
+                MOVE 'NUMERO DE EMPRESA NO EXISTE' TO MMENSAJEO
+             ELSE
+                MOVE 'ERROR EN ACCESO A FICHERO LISTIN' TO MMENSAJEO
+             END-IF
+           END-IF
+           MOVE FVEN-CVENTAS TO CVEN-CVENTAS.
+       MOVER-CAMPOS.
+            MOVE FVEN-CVENDEDOR TO MSAL-VENDEDOR1O
+            MOVE FVEN-CVENTAS TO MSAL-VENTAS1O.
+
+       ULTIMO-REGISTRO.
+            EXEC CICS STARTBR DATASET ('VENTAS')
+                             RIDFLD(WVEN-CVENTAS)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+               EXEC CICS READPREV DATASET('VENTAS')
+                                 INTO(REG-VENTAS)
+                                 RIDFLD(WVEN-CVENTAS)
+                                 NOHANDLE
+                                 END-EXEC
+
+               IF EIBRESP > 0
+                 IF EIBRESP NOT = 15 AND NOT = 20
+                   MOVE 'ERROR EN READPREV CON FICHERO ' TO MMENSAJEO
+                 END-IF
+               END-IF.
+

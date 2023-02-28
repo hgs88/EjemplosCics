@@ -1,0 +1,686 @@
+***************************************************************
+*
+* MVE0020
+*
+* Creado: 19-ene-2014 20:20:17 Europe/Paris
+*
+* Generado por: IBM Rational Developer for System z
+*
+* Descripci¢n:
+* mapa ventas
+*
+***************************************************************
+MVE0020  DFHMSD TYPE=MAP,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,           *
+               CTRL=FREEKB,EXTATT=YES,TERM=3270-2,TIOAPFX=YES,         *
+               MAPATTS=(COLOR,HILIGHT,OUTLINE,PS),                     *
+               DSATTS=(COLOR,HILIGHT,OUTLINE,PS)
+MVE002A  DFHMDI SIZE=(24,80),CURSLOC=YES,                              *
+               COLUMN=1,                                               *
+               LINE=1,                                                 *
+               MAPATTS=(COLOR,HILIGHT,OUTLINE),                        *
+               DSATTS=(COLOR,HILIGHT,OUTLINE)
+         DFHMDF POS=(1,21),LENGTH=35,                                  *
+               INITIAL='     SELECCION FICHERO VENTAS',                *
+               ATTRB=(ASKIP,BRT),HILIGHT=OFF,COLOR=PINK
+MVE002-TIPO-SELECCION DFHMDF POS=(3,2),LENGTH=76,                      *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(5,3),LENGTH=7,INITIAL='C-VENTA',                  *
+               ATTRB=(ASKIP,BRT),HILIGHT=UNDERLINE,COLOR=BLUE
+         DFHMDF POS=(5,11),LENGTH=6,INITIAL='C-VEND',                  *
+               ATTRB=(ASKIP,BRT),HILIGHT=UNDERLINE,COLOR=BLUE
+         DFHMDF POS=(5,18),LENGTH=17,INITIAL='    VENDEDOR ',          *
+               ATTRB=(ASKIP,BRT),HILIGHT=UNDERLINE,COLOR=BLUE
+         DFHMDF POS=(5,36),LENGTH=6,INITIAL='C-PROD',                  *
+               ATTRB=(ASKIP,BRT),HILIGHT=UNDERLINE,COLOR=BLUE
+         DFHMDF POS=(5,43),LENGTH=13,INITIAL='  PRODUCTO   ',          *
+               ATTRB=(ASKIP,BRT),HILIGHT=UNDERLINE,COLOR=BLUE
+         DFHMDF POS=(5,58),LENGTH=8,INITIAL='  KILOS',                 *
+               ATTRB=(ASKIP,BRT),HILIGHT=UNDERLINE,COLOR=BLUE
+         DFHMDF POS=(5,67),LENGTH=10,INITIAL='   FECHA',               *
+               ATTRB=(ASKIP,BRT),HILIGHT=UNDERLINE,COLOR=BLUE
+* MVE02-POS                       MVE02-POS
+MVE02-POS DFHMDF POS=(6,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,3),LENGTH=0,                                    *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD   DFHMDF POS=(7,1),LENGTH=1,                                    *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,3),LENGTH=0,                                    *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD1  DFHMDF POS=(8,1),LENGTH=1,                                    *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,3),LENGTH=0,                                    *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD2  DFHMDF POS=(9,1),LENGTH=1,                                    *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,3),LENGTH=0,                                    *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD3  DFHMDF POS=(10,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD4  DFHMDF POS=(11,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD5  DFHMDF POS=(12,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD6  DFHMDF POS=(13,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD7  DFHMDF POS=(14,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD8  DFHMDF POS=(15,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD9  DFHMDF POS=(16,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD10 DFHMDF POS=(17,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD11 DFHMDF POS=(18,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD12 DFHMDF POS=(19,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD13 DFHMDF POS=(20,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-POS                       MVE02-POS
+DFHFLD14 DFHMDF POS=(21,1),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,3),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+MVE02-COD-VENTA DFHMDF POS=(6,4),LENGTH=6,                             *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,11),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD15 DFHMDF POS=(7,4),LENGTH=6,                                    *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,11),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD16 DFHMDF POS=(8,4),LENGTH=6,                                    *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,11),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD17 DFHMDF POS=(9,4),LENGTH=6,                                    *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,11),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD18 DFHMDF POS=(10,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD19 DFHMDF POS=(11,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD20 DFHMDF POS=(12,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD21 DFHMDF POS=(13,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD22 DFHMDF POS=(14,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD23 DFHMDF POS=(15,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD24 DFHMDF POS=(16,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD25 DFHMDF POS=(17,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD26 DFHMDF POS=(18,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD27 DFHMDF POS=(19,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD28 DFHMDF POS=(20,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENTA                 MVE02-COD-VENTA
+DFHFLD29 DFHMDF POS=(21,4),LENGTH=6,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,11),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+MVE02-COD-VENDEDOR DFHMDF POS=(6,12),LENGTH=4,                         *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,17),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD30 DFHMDF POS=(7,12),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,17),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD31 DFHMDF POS=(8,12),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,17),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD32 DFHMDF POS=(9,12),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,17),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD33 DFHMDF POS=(10,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD34 DFHMDF POS=(11,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD35 DFHMDF POS=(12,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD36 DFHMDF POS=(13,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD37 DFHMDF POS=(14,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD38 DFHMDF POS=(15,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD39 DFHMDF POS=(16,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD40 DFHMDF POS=(17,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD41 DFHMDF POS=(18,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD42 DFHMDF POS=(19,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD43 DFHMDF POS=(20,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-VENDEDOR              MVE02-COD-VENDEDOR
+DFHFLD44 DFHMDF POS=(21,12),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,17),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+MVE02-NOM-VENDEDOR DFHMDF POS=(6,18),LENGTH=17,                        *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,36),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD45 DFHMDF POS=(7,18),LENGTH=17,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,36),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD46 DFHMDF POS=(8,18),LENGTH=17,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,36),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD47 DFHMDF POS=(9,18),LENGTH=17,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,36),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD48 DFHMDF POS=(10,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD49 DFHMDF POS=(11,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD50 DFHMDF POS=(12,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD51 DFHMDF POS=(13,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD52 DFHMDF POS=(14,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD53 DFHMDF POS=(15,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD54 DFHMDF POS=(16,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD55 DFHMDF POS=(17,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD56 DFHMDF POS=(18,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD57 DFHMDF POS=(19,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD58 DFHMDF POS=(20,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-VENDEDOR              MVE02-NOM-VENDEDOR
+DFHFLD59 DFHMDF POS=(21,18),LENGTH=17,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,36),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+MVE02-COD-PRODUCTO DFHMDF POS=(6,37),LENGTH=4,                         *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,42),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD60 DFHMDF POS=(7,37),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,42),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD61 DFHMDF POS=(8,37),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,42),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD62 DFHMDF POS=(9,37),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,42),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD63 DFHMDF POS=(10,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD64 DFHMDF POS=(11,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD65 DFHMDF POS=(12,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD66 DFHMDF POS=(13,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD67 DFHMDF POS=(14,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD68 DFHMDF POS=(15,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD69 DFHMDF POS=(16,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD70 DFHMDF POS=(17,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD71 DFHMDF POS=(18,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD72 DFHMDF POS=(19,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD73 DFHMDF POS=(20,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-COD-PRODUCTO              MVE02-COD-PRODUCTO
+DFHFLD74 DFHMDF POS=(21,37),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,42),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+MVE02-NOM-PRODUCTO DFHMDF POS=(6,43),LENGTH=13,                        *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,57),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD75 DFHMDF POS=(7,43),LENGTH=13,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,57),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD76 DFHMDF POS=(8,43),LENGTH=13,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,57),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD77 DFHMDF POS=(9,43),LENGTH=13,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,57),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD78 DFHMDF POS=(10,43),LENGTH=13,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD79 DFHMDF POS=(11,43),LENGTH=13,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD80 DFHMDF POS=(12,43),LENGTH=13,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD81 DFHMDF POS=(13,43),LENGTH=13,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD82 DFHMDF POS=(14,43),LENGTH=13,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD83 DFHMDF POS=(15,43),LENGTH=13,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD84 DFHMDF POS=(16,43),LENGTH=13,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD85 DFHMDF POS=(17,43),LENGTH=13,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD105 DFHMDF POS=(18,43),LENGTH=13,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD106 DFHMDF POS=(19,43),LENGTH=13,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD107 DFHMDF POS=(20,43),LENGTH=13,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-NOM-PRODUCTO              MVE02-NOM-PRODUCTO
+DFHFLD108 DFHMDF POS=(21,43),LENGTH=13,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,57),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+MVE03-KILOS DFHMDF POS=(6,58),LENGTH=7,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,66),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD109 DFHMDF POS=(7,58),LENGTH=7,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,66),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD110 DFHMDF POS=(8,58),LENGTH=7,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,66),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD111 DFHMDF POS=(9,58),LENGTH=7,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,66),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD112 DFHMDF POS=(10,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD113 DFHMDF POS=(11,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD114 DFHMDF POS=(12,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD115 DFHMDF POS=(13,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD116 DFHMDF POS=(14,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD117 DFHMDF POS=(15,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD118 DFHMDF POS=(16,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD119 DFHMDF POS=(17,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD120 DFHMDF POS=(18,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD121 DFHMDF POS=(19,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD122 DFHMDF POS=(20,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-KILOS                     MVE03-KILOS
+DFHFLD123 DFHMDF POS=(21,58),LENGTH=7,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,66),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+MVE02-FECHA DFHMDF POS=(6,67),LENGTH=10,                               *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD90 DFHMDF POS=(7,67),LENGTH=10,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD91 DFHMDF POS=(8,67),LENGTH=10,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD92 DFHMDF POS=(9,67),LENGTH=10,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD93 DFHMDF POS=(10,67),LENGTH=10,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD94 DFHMDF POS=(11,67),LENGTH=10,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD95 DFHMDF POS=(12,67),LENGTH=10,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD96 DFHMDF POS=(13,67),LENGTH=10,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD97 DFHMDF POS=(14,67),LENGTH=10,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD98 DFHMDF POS=(15,67),LENGTH=10,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD99 DFHMDF POS=(16,67),LENGTH=10,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD100 DFHMDF POS=(17,67),LENGTH=10,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD101 DFHMDF POS=(18,67),LENGTH=10,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD102 DFHMDF POS=(19,67),LENGTH=10,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD103 DFHMDF POS=(20,67),LENGTH=10,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE02-FECHA                     MVE02-FECHA
+DFHFLD104 DFHMDF POS=(21,67),LENGTH=10,                                *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+MVE02-MENSA DFHMDF POS=(23,1),LENGTH=77,                               *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=NEUTRAL
+MVE02-TECLAS DFHMDF POS=(24,1),LENGTH=77,                              *
+               ATTRB=(PROT,BRT),HILIGHT=OFF,COLOR=YELLOW
+MVE0020  DFHMSD TYPE=FINAL
+         END

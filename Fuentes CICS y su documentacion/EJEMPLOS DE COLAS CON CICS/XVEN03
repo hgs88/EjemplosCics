@@ -1,0 +1,244 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. XVEN03.
+       AUTHOR. H.GAYAN.
+       DATE-WRITTEN. FEB-2014.
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       77 WALTERVEND   PIC X(4).
+       01 REG-VENTAS.
+         02 REG-VEN.
+            03 CLAVES PIC X(6).
+            03 FILLER PIC X(22).
+          02 TODO REDEFINES REG-VEN.
+            03 FVEN-CVENTAS PIC 9(6).
+            03 FVEN-CVENDEDOR PIC 9999.
+            03 FVEN-ALTERVEND REDEFINES FVEN-CVENDEDOR  PIC X(4).
+            03 FVEN-CPRODUCTO PIC 9999.
+            03 FVEN-FECHA PIC 9(8).
+            03 FVEN-KILOS PIC 9(6).
+       77 VALOR-FINAL-VENTAS PIC 9(6).
+       77 WS-INPUTMSG PIC X(13) VALUE 'CESF LOGOFF'.
+       77 WVEN-CVENTAS  PIC X(6) VALUE HIGH-VALUES.
+       77 WVEN-CVENDEDOR  PIC X(4) VALUE HIGH-VALUES.
+       77 WCUENTA PIC 9(4) COMP  VALUE 0.
+       77 WAVANZA PIC 9 VALUE 1.
+       77 CHIVATO PIC X(12).
+       77 SAL PIC 9 VALUE 0.
+       77 WRETROPOS PIC 99 VALUE 18.
+       01 TQVEDEF PIC X(29) VALUE 'VENTASV'.
+       01 TQVE PIC X(29) VALUE 'TQVE'.
+
+        COPY MVE0010C .
+       COPY DFHAID SUPPRESS.
+       COPY DFHBMSCA SUPPRESS.
+
+       01  COMMAREA.
+           02 CVEN-CVENTAS PIC 9(6).
+           02 CVEN-CVENDEDOR PIC 9(4).
+           02 CVEN-CPRODUCTO PIC 9(4).
+           02 CVEN-FECHA PIC 9(8).
+           02 CVEN-KILOS PIC 9(6).
+           02 CVEN-ESTADO PIC X.
+           02 CVEN-CITEM PIC 9(4) COMP.
+           02 CVEN-LASTPOINT PIC 9(4) COMP.
+
+       01  REG-COLA.
+           02 Q-CVENTAS PIC 9(6).
+           02 Q-CVENDEDOR PIC 9(4).
+           02 Q-CPRODUCTO PIC 9(4).
+           02 Q-FECHA PIC 9(8).
+           02 Q-KILOS PIC 9(6).
+           02 Q-ESTADO PIC X.
+       LINKAGE SECTION.
+       01  DFHCOMMAREA  PIC X(37).
+       PROCEDURE DIVISION.
+       INICIO.
+           MOVE DFHCOMMAREA TO COMMAREA
+           MOVE LOW-VALUES TO MVE001AO
+           IF EIBCALEN = 0
+            MOVE 1 TO CVEN-LASTPOINT
+            PERFORM PRIMER-REGISTRO
+            PERFORM LISTAR-VENDEDOR
+            PERFORM MUESTRA-20RESGISTROS
+            PERFORM ENVIAR-MAPA
+           END-IF
+           MOVE DFHCOMMAREA TO COMMAREA
+           EVALUATE  EIBAID
+                WHEN DFHPF3
+                    PERFORM BORRAR-COLA
+                    EXEC CICS  RETURN TRANSID('CESF')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF4
+                    PERFORM BORRAR-COLA
+                    MOVE 'CESN CICSUSER' TO WS-INPUTMSG
+                    EXEC CICS  RETURN TRANSID('CESN')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF5
+                     MOVE 0 TO CVEN-CITEM
+                      MOVE 'PF5 PRIMER REGISTRO' TO MVE00-MENSAO
+                      PERFORM PRIMER-REGISTRO
+                     PERFORM ENVIAR-MAPA
+                WHEN DFHPF6
+                     MOVE 'PF6 ULTIMO REGISTRO' TO MVE00-MENSAO
+                     PERFORM ULTIMO-REGISTRO
+                     PERFORM ENVIAR-MAPA
+                WHEN DFHPF7
+                     MOVE 0 TO WAVANZA
+                     PERFORM  MUESTRA-20RESGISTROS
+                     PERFORM ENVIAR-MAPA
+                WHEN DFHPF8
+                     MOVE 1 TO WAVANZA
+                     PERFORM  MUESTRA-20RESGISTROS
+                     PERFORM ENVIAR-MAPA
+                WHEN OTHER
+                     PERFORM ENVIAR-MAPA
+            END-EVALUATE.
+
+        RECIBIR-MAPA.
+            EXEC CICS RECEIVE MAP('MVE001A')
+                                MAPSET('MVE0010')
+                                INTO(MVE001AI)
+                                END-EXEC.
+        ENVIAR-MAPA.
+                 EXEC CICS SEND MAP('MVE001A')
+                                MAPSET('MVE0010')
+                                  FROM(MVE001AO)
+                                  ERASE
+                                  ALARM
+                                  CURSOR
+                                  FREEKB
+                                  END-EXEC
+                     EXEC CICS RETURN TRANSID('VT01')
+                         COMMAREA(COMMAREA)
+                         LENGTH(37)
+                                END-EXEC.
+        PRIMER-REGISTRO.
+           MOVE '0003' TO FVEN-CVENDEDOR
+            EXEC CICS STARTBR DATASET ('VENTASV')
+                             RIDFLD(FVEN-CVENDEDOR)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+
+             EXEC CICS READNEXT DATASET('VENTASV')
+                       INTO (REG-VENTAS)
+                       NOHANDLE
+                       RIDFLD(FVEN-CVENDEDOR)
+                       END-EXEC
+
+              IF EIBRESP > 0 AND NOT = 15
+                IF EIBRESP = 13
+                MOVE 'NUMERO DE EMPRESA NO EXISTE' TO MVE00-MENSAO
+                ELSE
+                MOVE 'ERROR EN ACCESO A FICHERO LISTIN' TO MVE00-MENSAO
+                END-IF
+                END-IF
+                MOVE FVEN-CVENDEDOR TO CVEN-CVENDEDOR.
+
+       ULTIMO-REGISTRO.
+            EXEC CICS STARTBR DATASET ('VENTASV')
+                             RIDFLD(WVEN-CVENDEDOR)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+               EXEC CICS READPREV DATASET('VENTASV')
+                                 INTO(REG-VENTAS)
+                                 RIDFLD(WVEN-CVENDEDOR)
+                                 NOHANDLE
+                                 END-EXEC
+
+               IF EIBRESP > 0
+                 IF EIBRESP NOT = 15 AND NOT = 20
+                  MOVE 'ERROR EN READPREV CON FICHERO' TO MVE00-MENSAO
+                END-IF
+                END-IF.
+
+       ESCRIBIR-COLA.
+             EXEC CICS WRITEQ TS QUEUE(TQVE)
+             FROM(REG-COLA)
+             NOSUSPEND
+             END-EXEC.
+
+       BORRAR-COLA.
+             EXEC CICS DELETEQ TS QUEUE(TQVE)
+             END-EXEC.
+       LISTAR-VENDEDOR.
+              MOVE 0 TO SAL
+              MOVE 0 TO WCUENTA
+              PERFORM UNTIL SAL = 1
+
+                 EXEC CICS READNEXT DATASET('VENTASV')
+                                    INTO(REG-VEN)
+                                    RIDFLD(CVEN-CVENDEDOR)
+                                    NOHANDLE
+                                    END-EXEC
+                IF EIBRESP = 15
+                    MOVE 'CLAVE DUPLICADA' TO MVE00-MENSAO
+                   END-IF
+                IF EIBRESP = 20
+                    MOVE 'FIN DE FICHERO' TO MVE00-MENSAO
+                   END-IF
+                IF CVEN-CVENDEDOR = 3
+                MOVE REG-VENTAS TO REG-COLA
+                PERFORM ESCRIBIR-COLA
+                ADD 1 TO WCUENTA
+                ELSE MOVE 1 TO SAL
+                END-IF
+                END-PERFORM
+                MOVE WCUENTA TO CVEN-CITEM.
+       MUESTRA-20RESGISTROS.
+               MOVE 0 TO WCUENTA
+               PERFORM VARYING WCUENTA FROM 1 BY 1 UNTIL WCUENTA = 18
+                IF WAVANZA = 1
+                   IF CVEN-LASTPOINT < CVEN-CITEM
+                     EXEC CICS READQ TS QUEUE(TQVE)
+                                       INTO(REG-COLA)
+                                       ITEM(CVEN-LASTPOINT)
+                                       END-EXEC
+                        IF EIBRESP = 15
+                            MOVE 'CLAVE DUPLICADA' TO MVE00-MENSAO
+                        END-IF
+                        IF EIBRESP  = 20
+                         MOVE 'FIN DE FICHERO ' TO MVE00-MENSAO
+                        END-IF
+                        MOVE REG-COLA TO REG-VENTAS
+                          MOVE Q-CVENDEDOR TO MVE00-SEGO(WCUENTA)
+                          MOVE Q-CVENTAS TO MVE00-PROG-DESCO(WCUENTA)
+                          MOVE Q-FECHA TO MVE00-PROGO(WCUENTA)
+                         ADD 1 TO CVEN-LASTPOINT
+                    ELSE
+                   MOVE 'LLEGASTE A L FINAL DE LA COLA' TO MVE00-MENSAO
+                   END-IF
+                   ELSE
+                       IF CVEN-LASTPOINT > 1
+                          EXEC CICS READQ TS QUEUE(TQVE)
+                                          INTO(REG-COLA)
+                                          ITEM(CVEN-LASTPOINT)
+                                          END-EXEC
+                        IF EIBRESP = 15
+                            MOVE 'CLAVE DUPLICADA' TO MVE00-MENSAO
+                        END-IF
+                        IF EIBRESP  = 20
+                         MOVE 'FIN DE FICHERO ' TO MVE00-MENSAO
+                        END-IF
+                        MOVE REG-COLA TO REG-VENTAS
+                         SUBTRACT 1 FROM WRETROPOS
+                          MOVE Q-CVENDEDOR TO MVE00-SEGO(WRETROPOS)
+                          MOVE Q-CVENTAS TO MVE00-PROG-DESCO(WRETROPOS)
+                          MOVE Q-FECHA TO MVE00-PROGO(WRETROPOS)
+                         SUBTRACT 1 FROM CVEN-LASTPOINT
+                        ELSE
+                 MOVE 'ESTAS AL PRINCIPIO DE LA COLA' TO MVE00-MENSAO
+                      END-IF
+                      END-IF
+                      END-PERFORM.
+
+

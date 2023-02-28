@@ -1,0 +1,306 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. XGRUPO1D.
+       AUTHOR. J.GAYAN.
+       DATE-WRITTEN. DIC-2013.
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  REG-GRUPO.
+           03 FGRUP-CODIGO    PIC 99.
+           03 FGRUP-DESCRIPCION  PIC X(12).
+       COPY MGRUP30.
+       COPY DFHAID.
+       COPY DFHBMSCA.
+       77 WS-INPUTMSG PIC X(13) VALUE 'CESF LOGOFF  '.
+       77 WGRUP-CODIGO  PIC XX VALUE X'FFFF'.
+       01  COMMAREA.
+           02 CGRUP-CODIGO   PIC 99.
+           02 CGRUP-DESCRIPCION PIC X(12).
+           02 CGRUP-PRIM-KEY  PIC 99.
+           02 CGRUP-ESTADO    PIC X.
+       LINKAGE SECTION.
+       01  DFHCOMMAREA  PIC X(17).
+       PROCEDURE DIVISION.
+       INICIO.
+           MOVE DFHCOMMAREA TO COMMAREA
+           MOVE LOW-VALUES TO MGRUP31O
+           IF EIBCALEN = 0
+               MOVE ' PRIMER' TO MGRUP-ESTADOO
+               MOVE DFHBLINK  TO MGRUP-ESTADOH
+               PERFORM PRIMER-REGISTRO
+               PERFORM MOVER-CAMPOS
+               PERFORM ENVIAR-MAPA
+           END-IF
+           MOVE DFHCOMMAREA TO COMMAREA
+           EVALUATE  EIBAID
+                WHEN DFHPF3
+                    EXEC CICS  RETURN TRANSID('CESF')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF4
+                    MOVE 'CESN CICSUSER' TO WS-INPUTMSG
+                    EXEC CICS  RETURN TRANSID('CESN')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF7
+                   PERFORM RETROCEDER
+                WHEN DFHPF8
+                   PERFORM AVANZAR
+                WHEN DFHPF9
+                   PERFORM ALTA
+                WHEN DFHPF10
+                   PERFORM BAJA
+                WHEN DFHPF11
+                   PERFORM MODIFICAR
+                WHEN DFHENTER
+                    IF CGRUP-ESTADO = 'M'
+                      PERFORM MODIFICAR
+                      END-IF
+                WHEN OTHER
+                    MOVE 'TECLA DE FUNCION NO PERMITIDA' TO MGRUP-MENSAO
+                    MOVE CGRUP-CODIGO TO MGRUP-CODIGOO
+                    MOVE CGRUP-DESCRIPCION TO MGRUP-DESCRIPCIONO
+                    PERFORM ENVIAR-MAPA
+           END-EVALUATE.
+       RETROCEDER.
+             EXEC CICS STARTBR DATASET ('GRUPO')
+                             RIDFLD(CGRUP-CODIGO)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+             IF EIBRESP > 0
+                MOVE 'ERROR EN STARTBR GRUPOS ' TO MGRUP-MENSAO
+             END-IF
+                 PERFORM ANCLAJE
+                EXEC CICS READPREV DATASET('GRUPO')
+                              INTO(REG-GRUPO)
+                              RIDFLD(CGRUP-CODIGO)
+                              NOHANDLE
+                              END-EXEC
+           IF EIBRESP > 0
+             IF EIBRESP = 20
+                 MOVE 'INICIO DE  FICHERO ' TO MGRUP-MENSAO
+                 MOVE ' INI FIC' TO MGRUP-ESTADOO
+             ELSE
+                MOVE 'ERROR EN ACCESO A FICHERO GRUPOS' TO MGRUP-MENSAO
+             END-IF
+           END-IF
+            MOVE ' PATRAS  ' TO MGRUP-ESTADOO
+            PERFORM MOVER-CAMPOS
+            PERFORM ENVIAR-MAPA.
+       AVANZAR.
+            EXEC CICS STARTBR DATASET ('GRUPO')
+                             RIDFLD(CGRUP-CODIGO)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+            IF EIBRESP > 0
+              IF EIBRESP  = 13
+                IF CGRUP-ESTADO = 'B'
+                   PERFORM ULTIMO-REGISTRO
+                END-IF
+                MOVE 'NO HAY MAS REGISTROS ' TO MGRUP-MENSAO
+                MOVE ' FIN FIC' TO MGRUP-ESTADOO
+                PERFORM MOVER-CAMPOS
+                PERFORM ENVIAR-MAPA
+              ELSE
+                MOVE 'ERROR EN STARTBR  GRUPO ' TO MGRUP-MENSAO
+              END-IF
+            END-IF
+               EXEC CICS READNEXT DATASET('GRUPO')
+                                 INTO(REG-GRUPO)
+                                 RIDFLD(CGRUP-CODIGO)
+                                 NOHANDLE
+                                 END-EXEC
+               EXEC CICS READNEXT DATASET('GRUPO')
+                                 INTO(REG-GRUPO)
+                                 RIDFLD(CGRUP-CODIGO)
+                                 NOHANDLE
+                                 END-EXEC
+                 IF EIBRESP  = 20
+                   MOVE 'FIN DE FICHERO ' TO MGRUP-MENSAO
+                 END-IF
+            MOVE ' ADELANTE' TO MGRUP-ESTADOO
+            PERFORM MOVER-CAMPOS
+            PERFORM ENVIAR-MAPA.
+       MODIFICAR.
+              IF CGRUP-ESTADO = 'M'
+                 PERFORM RECIBIR-MAPA
+              MOVE CGRUP-CODIGO TO FGRUP-CODIGO
+              INSPECT MGRUP-DESCRIPCIONI REPLACING ALL '_' BY SPACES
+              MOVE MGRUP-DESCRIPCIONI  TO CGRUP-DESCRIPCION
+              EXEC CICS READ  DATASET('GRUPO')
+                                 INTO (REG-GRUPO)
+                                 UPDATE
+                                 NOHANDLE
+                                 RIDFLD (CGRUP-CODIGO)
+              END-EXEC
+              IF EIBRESP > 0 AND NOT = 15
+                IF EIBRESP = 13
+                  MOVE 'NUMERO DE EMPRESA NO EXISTE' TO MGRUP-MENSAO
+                ELSE
+                 MOVE 'ERROR EN ACCESO A FICHERO LISTIN' TO MGRUP-MENSAO
+                END-IF
+              END-IF
+              MOVE MGRUP-DESCRIPCIONI TO FGRUP-DESCRIPCION
+                   EXEC CICS REWRITE DATASET('GRUPO')
+                                     FROM(REG-GRUPO)
+                                     END-EXEC
+                     IF EIBRESP > 0
+                         MOVE 'ERROR EN REWRITE' TO MGRUP-MENSAO
+                     END-IF
+              MOVE ' ' TO  CGRUP-ESTADO
+              MOVE 'REGISTRO MODIFICADO   ' TO MGRUP-MENSAO             AO
+              ELSE
+                MOVE 'M' TO CGRUP-ESTADO
+                MOVE 'MODIFICAR' TO MGRUP-ESTADOO
+                MOVE DFHBLINK TO MGRUP-ESTADOH
+                MOVE DFHBMUNP TO MGRUP-DESCRIPCIONA
+                MOVE -1 TO MGRUP-DESCRIPCIONL
+                MOVE CGRUP-DESCRIPCION TO MGRUP-DESCRIPCIONO
+                MOVE FGRUP-CODIGO TO MGRUP-CODIGOO CGRUP-CODIGO
+                MOVE FGRUP-DESCRIPCION TO CGRUP-DESCRIPCION
+                MOVE FGRUP-DESCRIPCION TO MGRUP-DESCRIPCIONO
+                END-IF
+
+               PERFORM ENVIAR-MAPA.
+       ALTA.
+           IF CGRUP-ESTADO = 'A'
+              PERFORM RECIBIR-MAPA
+              MOVE CGRUP-CODIGO TO FGRUP-CODIGO MGRUP-CODIGOO
+              INSPECT MGRUP-DESCRIPCIONI REPLACING ALL '_' BY SPACES
+              MOVE MGRUP-DESCRIPCIONI TO FGRUP-DESCRIPCION
+              EXEC CICS WRITE DATASET('GRUPO')
+                              FROM(REG-GRUPO)
+                              NOHANDLE
+                              RIDFLD(FGRUP-CODIGO)
+                              END-EXEC
+              IF EIBRESP > 0 AND NOT = 15
+                IF EIBRESP = 13
+                  MOVE 'NUMERO DE EMPRESA NO EXISTE' TO MGRUP-MENSAO
+                ELSE
+                  MOVE 'ERROR EN ACCESO A FICHERO ' TO MGRUP-MENSAO     AO
+                END-IF
+              END-IF
+              MOVE ' ' TO CGRUP-ESTADO
+              MOVE 'REGISTRO DADO DE ALTA     ' TO MGRUP-MENSAO         AO
+           ELSE
+                MOVE 'A' TO CGRUP-ESTADO
+                MOVE 'ALTA' TO MGRUP-ESTADOO
+                MOVE DFHBLINK  TO MGRUP-ESTADOH
+                MOVE DFHBMUNP TO MGRUP-DESCRIPCIONA
+                MOVE -1  TO MGRUP-DESCRIPCIONL
+                MOVE ALL '_'  TO MGRUP-DESCRIPCIONO
+                PERFORM ULTIMO-REGISTRO
+                ADD 1 TO FGRUP-CODIGO
+                MOVE FGRUP-CODIGO TO MGRUP-CODIGOO
+                MOVE FGRUP-CODIGO TO CGRUP-CODIGO
+           END-IF
+               PERFORM ENVIAR-MAPA.
+       BAJA.
+              EXEC CICS DELETE DATASET('GRUPO')
+                               NOHANDLE
+                               RIDFLD(CGRUP-CODIGO)
+                               END-EXEC
+              IF EIBRESP > 0 AND NOT = 15
+                IF EIBRESP = 13
+                  MOVE 'REGISTRO NO EXISTE' TO MGRUP-MENSAO
+                ELSE
+                  MOVE 'ERROR EN ACCESO A FICHERO ' TO MGRUP-MENSAO     AO
+                END-IF
+              END-IF
+                MOVE 'B' TO CGRUP-ESTADO
+              MOVE 'REGISTRO DADO DE BAJA     ' TO MGRUP-MENSAO         AO
+               MOVE FGRUP-CODIGO TO MGRUP-CODIGOO
+               IF  CGRUP-CODIGO = CGRUP-PRIM-KEY
+                  PERFORM PRIMER-REGISTRO
+               END-IF
+               PERFORM ENVIAR-MAPA.
+       RECIBIR-MAPA.
+           EXEC CICS RECEIVE MAP('MGRUP31')
+                                MAPSET('MGRUP30')
+                                INTO(MGRUP31I)
+                                END-EXEC.
+       ENVIAR-MAPA.
+                 EXEC CICS SEND MAP('MGRUP31')
+                                MAPSET('MGRUP30')
+                                  FROM(MGRUP31O)
+                                  ERASE
+                                  ALARM
+                                  CURSOR
+                                  FREEKB
+                                  END-EXEC
+                     EXEC CICS RETURN TRANSID('VE03')
+                         COMMAREA(COMMAREA)
+                         LENGTH(17)
+                                END-EXEC.
+       MOVER-CAMPOS.
+            MOVE FGRUP-CODIGO TO MGRUP-CODIGOO
+            MOVE FGRUP-CODIGO TO CGRUP-CODIGO
+            MOVE FGRUP-DESCRIPCION TO MGRUP-DESCRIPCIONO
+            MOVE FGRUP-DESCRIPCION TO CGRUP-DESCRIPCION.
+       RETORNO.
+                 EXEC CICS SEND MAP('MGRUP31')
+                                  FROM(MGRUP31O)
+                                  MAPSET('MGRUP30')
+                                  ERASE
+                                  FREEKB
+                                  END-EXEC
+               EXEC CICS RETURN TRANSID ('VE03')
+                         COMMAREA(COMMAREA)
+                         LENGTH(17)
+                         END-EXEC.
+       ULTIMO-REGISTRO.
+            EXEC CICS STARTBR DATASET ('GRUPO')
+                             RIDFLD(WGRUP-CODIGO)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+               EXEC CICS READPREV DATASET('GRUPO')
+                                 INTO(REG-GRUPO)
+                                 RIDFLD(WGRUP-CODIGO)
+                                 NOHANDLE
+                                 END-EXEC
+
+               IF EIBRESP > 0
+                 IF EIBRESP NOT = 15 AND NOT = 20
+                   MOVE 'ERROR EN READNEXT CON FICHERO ' TO MGRUP-MENSAO
+                 END-IF
+               END-IF.
+       PRIMER-REGISTRO.
+           MOVE 0 TO FGRUP-CODIGO
+           EXEC CICS READ DATASET('GRUPO')
+                       INTO (REG-GRUPO)
+                       GTEQ
+                       NOHANDLE
+                       RIDFLD (FGRUP-CODIGO)
+                       END-EXEC
+           IF EIBRESP > 0 AND NOT = 15
+             IF EIBRESP = 13
+                MOVE 'NUMERO DE EMPRESA NO EXISTE' TO MGRUP-MENSAO
+             ELSE
+                MOVE 'ERROR EN ACCESO A FICHERO LISTIN' TO MGRUP-MENSAO
+             END-IF
+           END-IF
+           MOVE FGRUP-CODIGO TO CGRUP-PRIM-KEY.
+       ANCLAJE.
+               EXEC CICS READNEXT DATASET('GRUPO')
+                                 INTO(REG-GRUPO)
+                                 RIDFLD(CGRUP-CODIGO)
+                                 NOHANDLE
+                                 END-EXEC
+               IF EIBRESP > 0
+                 IF EIBRESP NOT = 15 AND NOT = 20
+                   MOVE 'ERROR EN READNEXT CON FICHERO ' TO MGRUP-MENSAO
+                 END-IF
+               END-IF
+                EXEC CICS READPREV DATASET('GRUPO')
+                              INTO(REG-GRUPO)
+                              RIDFLD(CGRUP-CODIGO)
+                              NOHANDLE
+                              END-EXEC.

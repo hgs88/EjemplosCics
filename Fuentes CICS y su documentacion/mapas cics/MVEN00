@@ -1,0 +1,54 @@
+***************************************************************
+* 
+* MVENTAS
+* 
+* Creado: 09-ene-2014 19:20:57 Europe/Paris
+* 
+* Generado por: Rational Team Concert
+* 
+* Descripción:
+* 
+* 
+***************************************************************
+MVEN00  DFHMSD TYPE=MAP,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,           *
+               CTRL=FREEKB,EXTATT=YES,TERM=3270-2,TIOAPFX=YES,         *
+               MAPATTS=(COLOR,HILIGHT,OUTLINE,PS,SOSI),                *
+               DSATTS=(COLOR,HILIGHT,OUTLINE,PS,SOSI)
+MVEN     DFHMDI SIZE=(24,80),                                          *
+               COLUMN=1,                                               *
+               LINE=1
+eti-clave-principal DFHMDF POS=(2,2),LENGTH=15,                        *
+               INITIAL='Clave principal',                              *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=NEUTRAL
+MCLAVE-PRINCIPAL DFHMDF POS=(2,20),LENGTH=6,                           *
+               ATTRB=(NUM,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(2,27),LENGTH=0,                                   *
+               ATTRB=ASKIP
+ETI-CLAVE-ALTER DFHMDF POS=(4,2),LENGTH=16,INITIAL='CODIGO VENDEDOR',  *
+               ATTRB=(ASKIP,NORM),HILIGHT=UNDERLINE,COLOR=NEUTRAL
+MCLAVE-ALTER1 DFHMDF POS=(4,20),LENGTH=4,                              *
+               ATTRB=(NUM,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(4,25),LENGTH=0,                                   *
+               ATTRB=ASKIP
+ETI-CLAVE-ALTER2 DFHMDF POS=(6,2),LENGTH=16,INITIAL='CODIGO PRODUCTO', *
+               ATTRB=(ASKIP,NORM),HILIGHT=UNDERLINE,COLOR=NEUTRAL
+MCLAVE-ALTER2 DFHMDF POS=(6,20),LENGTH=4,                              *
+               ATTRB=(NUM,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,25),LENGTH=0,                                   *
+               ATTRB=ASKIP
+ETI-CLAVE-ALTER3 DFHMDF POS=(8,2),LENGTH=16,INITIAL='FECHA VENTA',     *
+               ATTRB=(ASKIP,NORM),HILIGHT=UNDERLINE,COLOR=NEUTRAL
+MCLAVE-ALTER3 DFHMDF POS=(8,20),LENGTH=8,                              *
+               ATTRB=(NUM,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,29),LENGTH=0,                                   *
+               ATTRB=ASKIP
+ETI-CANTIDAD DFHMDF POS=(10,2),LENGTH=16,INITIAL='CANTIDAD KILOS',     *
+               ATTRB=(ASKIP,NORM),HILIGHT=UNDERLINE,COLOR=NEUTRAL
+MVEN-CANTIDAD DFHMDF POS=(10,20),LENGTH=8,                             *
+               ATTRB=(NUM,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,29),LENGTH=0,                                  *
+               ATTRB=ASKIP
+MMENSAJE DFHMDF POS=(21,5),LENGTH=70,                                  *
+               ATTRB=(PROT,BRT),HILIGHT=OFF,COLOR=RED
+MVEN00  DFHMSD TYPE=FINAL
+         END

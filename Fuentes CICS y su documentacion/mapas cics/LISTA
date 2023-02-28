@@ -1,0 +1,50 @@
+***************************************************************
+*
+* MAPA2
+*
+* Creado: 17-dic-2013 13:50:45 Europe/Paris
+*
+* Generado por: IBM Rational Developer for System z
+*
+* Descripción:
+*
+*
+***************************************************************
+MAPA2    DFHMSD TYPE=MAP,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,           *
+               CTRL=FREEKB,EXTATT=YES,TERM=3270-2,TIOAPFX=YES,         *
+               MAPATTS=(COLOR,HILIGHT,OUTLINE,PS,SOSI),                *
+               DSATTS=(COLOR,HILIGHT,OUTLINE,PS,SOSI)
+MAP1     DFHMDI SIZE=(24,80),                                          *
+               COLUMN=1,                                               *
+               LINE=1
+         DFHMDF POS=(2,19),LENGTH=29,INITIAL='      Lista de grupos',  *
+               ATTRB=(ASKIP,NORM),HILIGHT=UNDERLINE,COLOR=PINK
+ecodigo  DFHMDF POS=(4,4),LENGTH=6,INITIAL='Codigo',                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=NEUTRAL,           *
+               GRPNAME=Codigo
+etcodigo DFHMDF POS=(4,13),LENGTH=2,                                   *
+               ATTRB=(NUM,NORM),HILIGHT=OFF,COLOR=RED
+         DFHMDF POS=(4,16),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(4,50),LENGTH=14,                                  *
+               ATTRB=(ASKIP,BRT),HILIGHT=BLINK,COLOR=GREEN
+         DFHMDF POS=(6,3),LENGTH=7,INITIAL='Grupos',                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=NEUTRAL
+tegrupo  DFHMDF POS=(6,12),LENGTH=19,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,3),LENGTH=8,INITIAL='Listas',                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=NEUTRAL
+* Listas_grupo                    Listas_grupo
+Listas_grupo DFHMDF POS=(8,13),LENGTH=20,                              *
+               ATTRB=(UNPROT,IC,NORM),HILIGHT=UNDERLINE,COLOR=GREEN,OCCURS=14
+
+mensa    DFHMDF POS=(22,8),LENGTH=67,                                  *
+               ATTRB=(PROT,BRT),HILIGHT=OFF,COLOR=RED
+         DFHMDF POS=(23,2),LENGTH=76,                                  *
+               INITIAL='F-3 salir  f-7 back  f-8 next f-9 alta  f-10 ba*
+               ja  f-11 modificar  Intro',                             *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=YELLOW
+         DFHMDF POS=(8,34),LENGTH=0,                                   *
+               ATTRB=ASKIP
+MAPA2    DFHMSD TYPE=FINAL
+         END

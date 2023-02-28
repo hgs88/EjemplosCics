@@ -1,0 +1,213 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. XVE002.
+       AUTHOR. J.GAYAN.
+       DATE-WRITTEN. ENE-2013.
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 FVENTAS-REG.
+          02  FVENTAS-UNO.
+            03 FVENTAS-CLAVE PIC X(6).
+            03 FILLER PIC X(22).
+          02 FILLER REDEFINES FVENTAS-UNO.
+            03 FVENTAS-COD-VENTA PIC 9(6).
+            03 FVENTAS-COD-VENDEDOR PIC 9(4).
+            03 FVENTAS-COD-PRODUCTO PIC 9(4).
+            03 FVENTAS-A PIC 9(4).
+            03 FVENTAS-M PIC 99.
+            03 FVENTAS-D PIC 99.
+            03 FVENTAS-KILOS PIC 9(4)V99.
+       COPY MVE0020C.
+       COPY DFHAID.
+       COPY DFHBMSCA.
+       77 WS-INPUTMSG PIC X(13) VALUE 'CESF LOGOFF  '.
+       77 WHIGH-VALUE   PIC XX VALUE X'FFFF'.
+       77 WNUMLIN       PIC 99.
+       77 A             PIC 99.
+       77 WLIMP         PIC 9 VALUE 0.
+       77 WTOPLIN       PIC 99 VALUE 16.
+       77 WLIN          PIC 99 VALUE 1.
+       77 WKILOS        PIC ZZZ9,99.
+       01 WFECHA.
+          03 WAA  PIC 9(4).
+          03 FILLER PIC X VALUE '-'.
+          03 WMM  PIC 99.
+          03 FILLER PIC X VALUE '-'.
+          03 WDD  PIC 99.
+       01  COMMAREA.
+           02 CVENTAS-PRIM-KEY PIC X(6).
+           02 CVENTAS-FIRST   PIC X(6).
+           02 CVENTAS-LAST    PIC X(6).
+           02 FILLER          PIC X(4).
+       LINKAGE SECTION.
+       01  DFHCOMMAREA  PIC X(250).
+       PROCEDURE DIVISION.
+       INICIO.
+           MOVE DFHCOMMAREA TO COMMAREA
+           IF EIBCALEN = 0
+               MOVE LOW-VALUES TO MVE002AO
+               MOVE 0 TO CVENTAS-LAST
+               MOVE ' PRIMER' TO MVE02-TIPO-SELECCIONO
+               MOVE DFHBLINK  TO MVE02-TIPO-SELECCIONH
+               PERFORM AVANZAR
+           END-IF
+           MOVE DFHCOMMAREA TO COMMAREA
+           MOVE LOW-VALUES TO MVE002AO
+           PERFORM RECIBIR-MAPA
+           EVALUATE  EIBAID
+                WHEN DFHPF3
+                        EXEC CICS XCTL PROGRAM('XVE001')
+                        END-EXEC
+                WHEN DFHPF7
+                   PERFORM RETROCEDER
+                WHEN DFHPF8
+                   PERFORM AVANZAR
+                WHEN OTHER
+                   MOVE 'TECLA DE FUNCION NO PERMITIDA' TO MVE02-MENSAO
+                   PERFORM ENVIAR-MAPA
+           END-EVALUATE.
+       RETROCEDER.
+             MOVE WTOPLIN TO WLIN
+             MOVE CVENTAS-FIRST TO FVENTAS-CLAVE
+             EXEC CICS STARTBR DATASET ('VENTAS')
+                             RIDFLD(FVENTAS-CLAVE)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+             IF EIBRESP > 0
+                MOVE 'ERROR EN STARTBR VENTAS ' TO MVE02-MENSAO
+             END-IF
+             PERFORM ANCLAJE
+             PERFORM UNTIL WLIN < 1 OR EIBRESP > 0
+                EXEC CICS READPREV DATASET('VENTAS')
+                              INTO(FVENTAS-REG)
+                              RIDFLD(FVENTAS-CLAVE)
+                              NOHANDLE
+                              END-EXEC
+               IF EIBRESP > 0
+                 IF EIBRESP = 20
+                   MOVE 'INICIO DE  FICHERO ' TO MVE02-MENSAO
+                   MOVE ' INI FIC' TO MVE02-TIPO-SELECCIONO
+                   PERFORM ENVIAR-MAPA
+
+                 ELSE
+                   MOVE 'ERROR EN ACCESO A FICHERO GRUPOS' TO
+                             MVE02-MENSAO
+                 END-IF
+               END-IF
+                 PERFORM MOVER-CAMPOS
+                 SUBTRACT 1 FROM  WLIN
+            END-PERFORM
+            MOVE ' PATRAS  ' TO MVE02-TIPO-SELECCIONO
+            MOVE MVE02-COD-VENTAO(1) TO CVENTAS-FIRST
+            MOVE MVE02-COD-VENTAO(WTOPLIN) TO CVENTAS-LAST
+            PERFORM ENVIAR-MAPA.
+       AVANZAR.
+            MOVE CVENTAS-LAST TO FVENTAS-CLAVE
+            EXEC CICS STARTBR DATASET ('VENTAS')
+                             RIDFLD(FVENTAS-CLAVE)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+            IF EIBRESP > 0
+              IF EIBRESP  = 13
+                MOVE 'NO HAY MAS REGISTROS ' TO MVE02-MENSAO
+                MOVE ' FIN FIC' TO MVE02-TIPO-SELECCIONO
+                PERFORM ENVIAR-MAPA
+              ELSE
+                MOVE 'ERROR EN STARTBR  VENTAS' TO MVE02-MENSAO
+              END-IF
+            END-IF
+            IF EIBCALEN > 0
+               EXEC CICS READNEXT DATASET('VENTAS')
+                                 INTO(FVENTAS-REG)
+                                 RIDFLD(FVENTAS-CLAVE)
+                                 NOHANDLE
+                                 END-EXEC
+                 IF EIBRESP  = 20
+                   MOVE 'FIN DE FICHERO ' TO MVE02-MENSAO
+                 END-IF
+            END-IF
+            PERFORM UNTIL WLIN > WTOPLIN OR EIBRESP > 0
+               EXEC CICS READNEXT DATASET('VENTAS')
+                                 INTO(FVENTAS-REG)
+                                 RIDFLD(FVENTAS-CLAVE)
+                                 NOHANDLE
+                                 END-EXEC
+                 IF EIBRESP  = 20
+                   MOVE 'FIN DE FICHERO ' TO MVE02-MENSAO
+                   PERFORM ENVIAR-MAPA
+                 END-IF
+                 IF EIBCALEN = 0 AND WLIN = 1
+                  MOVE FVENTAS-CLAVE TO CVENTAS-FIRST
+                 END-IF
+                 IF WLIMP = 0
+                   MOVE LOW-VALUES TO MVE002AO
+                   MOVE 1 TO WLIMP
+                 END-IF
+                 PERFORM MOVER-CAMPOS
+                 ADD 1 TO WLIN
+            END-PERFORM
+            MOVE MVE02-COD-VENTAO(1) TO CVENTAS-FIRST
+            MOVE MVE02-COD-VENTAO(WLIN - 1 ) TO CVENTAS-LAST
+            MOVE ' ADELANTE' TO MVE02-TIPO-SELECCIONO
+            PERFORM ENVIAR-MAPA.
+       RECIBIR-MAPA.
+           EXEC CICS RECEIVE MAP('MVE002A')
+                                MAPSET('MVE0020')
+                                INTO(MVE002AI)
+                                END-EXEC.
+       ENVIAR-MAPA.
+            PERFORM FLAGTAG
+                 EXEC CICS SEND MAP('MVE002A')
+                                MAPSET('MVE0020')
+                                  FROM(MVE002AO)
+                                  ERASE
+                                  ALARM
+                                  CURSOR
+                                  FREEKB
+                                  END-EXEC
+                     EXEC CICS RETURN TRANSID('VE02')
+                         COMMAREA(COMMAREA)
+                         LENGTH(LENGTH OF COMMAREA)
+                                END-EXEC.
+       MOVER-CAMPOS.
+            MOVE FVENTAS-CLAVE TO MVE02-COD-VENTAO(WLIN)
+            MOVE FVENTAS-COD-VENDEDOR TO MVE02-COD-VENDEDORO(WLIN)
+            MOVE FVENTAS-COD-PRODUCTO TO MVE02-COD-PRODUCTOO(WLIN)
+            MOVE FVENTAS-KILOS TO WKILOS
+            MOVE WKILOS TO MVE02-KILOSO(WLIN)
+            MOVE FVENTAS-A TO WAA
+            MOVE FVENTAS-M TO WMM
+            MOVE FVENTAS-D TO WDD
+            MOVE WFECHA TO MVE02-FECHAO(WLIN).
+       ANCLAJE.
+               EXEC CICS READNEXT DATASET('VENTAS')
+                                 INTO(FVENTAS-REG)
+                                 RIDFLD(FVENTAS-CLAVE)
+                                 NOHANDLE
+                                 END-EXEC
+               IF EIBRESP > 0
+                 IF EIBRESP NOT = 15 AND NOT = 20
+                   MOVE 'ERROR EN READNEXT CON FICHERO ' TO MVE02-MENSAO
+                 END-IF
+               END-IF
+                EXEC CICS READPREV DATASET('VENTAS')
+                              INTO(FVENTAS-REG)
+                              RIDFLD(FVENTAS-CLAVE)
+                              NOHANDLE
+                              END-EXEC.
+       FLAGTAG.
+              MOVE -1       TO MVE02-POSL(1)
+            PERFORM VARYING A FROM 1 BY 1 UNTIL A > WTOPLIN
+              MOVE DFHUNNON TO MVE02-POSA(A)
+              MOVE DFHBMFSE TO MVE02-COD-VENTAA(A) MVE02-COD-VENTAA(A)
+               MVE02-COD-VENDEDORA(A) MVE02-COD-PRODUCTOA(A)
+               MVE02-NOM-VENDEDORA(A) MVE02-NOM-PRODUCTOA(A)
+               MVE02-FECHAA(A) MVE02-KILOSA(A)
+            END-PERFORM.
+            MOVE DFHBMFSE TO MVE02-TECLASA
+            MOVE 'F3-SALIR   F-7 RETROCEDER   F-8 AVANZAR ' TO
+            MVE02-TECLASO
+            MOVE DFHYELLO TO MVE02-TECLASC.

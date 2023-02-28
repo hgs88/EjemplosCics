@@ -1,0 +1,235 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. XVEN02.
+       AUTHOR. H.GAYAN.
+       DATE-WRITTEN. DIC-2013.
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       77 WALTERVEND   PIC X(4).
+       01 REG-VENTAS.
+         02 REG-VEN.
+            03 CLAVES PIC X(6).
+            03 FILLER PIC X(22).
+          02 TODO REDEFINES REG-VEN.
+            03 FVEN-CVENTAS PIC 9(6).
+            03 FVEN-CVENDEDOR PIC 9999.
+            03 FVEN-ALTERVEND REDEFINES FVEN-CVENDEDOR  PIC X(4).
+            03 FVEN-CPRODUCTO PIC 9999.
+            03 FVEN-FECHA PIC 9(8).
+            03 FVEN-KILOS PIC 9(6).
+       77 VALOR-FINAL-VENTAS PIC 9(6).
+       77 WS-INPUTMSG PIC X(13) VALUE 'CESF LOGOFF'.
+       77 WVEN-CVENTAS  PIC X(6) VALUE HIGH-VALUES.
+       77 WVEN-CVENDEDOR  PIC X(4) VALUE HIGH-VALUES.
+       77 WCUENTA PIC 9(6) VALUE 0.
+       77 CHIVATO PIC X(12).
+       77 SAL PIC 9 VALUE 0.
+       01 TQVEDEF PIC X(29) VALUE 'VENTASV'.
+       01 TQVE PIC X(29) VALUE 'TQVE'.
+       01 QAVANZA PIC 9(4) VALUE 1.
+       COPY MVEN00 SUPPRESS.
+       COPY DFHAID SUPPRESS.
+       COPY DFHBMSCA SUPPRESS.
+
+       01  COMMAREA.
+           02 CVEN-CVENTAS PIC 9(6).
+           02 CVEN-CVENDEDOR PIC 9(4).
+           02 CVEN-CPRODUCTO PIC 9(4).
+           02 CVEN-FECHA PIC 9(8).
+           02 CVEN-KILOS PIC 9(6).
+           02 CVEN-ESTADO PIC X.
+           02 CVEN-CITEM PIC 9(4).
+
+       01  REG-COLA.
+           02 Q-CVENTAS PIC 9(6).
+           02 Q-CVENDEDOR PIC 9(4).
+           02 Q-CPRODUCTO PIC 9(4).
+           02 Q-FECHA PIC 9(8).
+           02 Q-KILOS PIC 9(6).
+           02 Q-ESTADO PIC X.
+       LINKAGE SECTION.
+       01  DFHCOMMAREA  PIC X(33).
+       PROCEDURE DIVISION.
+       INICIO.
+           MOVE DFHCOMMAREA TO COMMAREA
+           MOVE LOW-VALUES TO MVENO
+           IF EIBCALEN = 0
+            PERFORM PRIMER-REGISTRO
+            PERFORM MOVER-CAMPOS
+            PERFORM ENVIAR-MAPA
+           END-IF
+           MOVE DFHCOMMAREA TO COMMAREA
+           EVALUATE  EIBAID
+                WHEN DFHPF3
+                    PERFORM BORRAR-COLA
+                    EXEC CICS  RETURN TRANSID('CESF')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF4
+                    PERFORM BORRAR-COLA
+                    MOVE 'CESN CICSUSER' TO WS-INPUTMSG
+                    EXEC CICS  RETURN TRANSID('CESN')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF5
+                     MOVE 0 TO CVEN-CITEM
+                     MOVE 'PF5 PRIMER REGISTRO' TO MVEN-MENSAJEO
+                      PERFORM PRIMER-REGISTRO
+                      PERFORM MOVER-CAMPOS
+                     PERFORM ENVIAR-MAPA
+                WHEN DFHPF6
+                     MOVE 'PF6 ULTIMO REGISTRO' TO MVEN-MENSAJEO
+                     PERFORM ULTIMO-REGISTRO
+                     PERFORM MOVER-CAMPOS
+                     PERFORM ENVIAR-MAPA
+                WHEN DFHPF7
+                     PERFORM AVANZAR
+                WHEN DFHPF8
+                     PERFORM MOSTRAR-COLA
+                     PERFORM ENVIAR-MAPA
+                WHEN OTHER
+                PERFORM MOVER-CAMPOS
+                    PERFORM ENVIAR-MAPA
+            END-EVALUATE.
+
+        RECIBIR-MAPA.
+            EXEC CICS RECEIVE MAP('MVEN')
+                                MAPSET('MVEN00')
+                                INTO(MVENI)
+                                END-EXEC.
+        ENVIAR-MAPA.
+                 EXEC CICS SEND MAP('MVEN')
+                                MAPSET('MVEN00')
+                                  FROM(MVENO)
+                                  ERASE
+                                  ALARM
+                                  CURSOR
+                                  FREEKB
+                                  END-EXEC
+                     EXEC CICS RETURN TRANSID('VT00')
+                         COMMAREA(COMMAREA)
+                         LENGTH(33)
+                                END-EXEC.
+        PRIMER-REGISTRO.
+           MOVE '0003' TO FVEN-CVENDEDOR
+            EXEC CICS STARTBR DATASET ('VENTASV')
+                             RIDFLD(FVEN-CVENDEDOR)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+
+             EXEC CICS READNEXT DATASET('VENTASV')
+                       INTO (REG-VENTAS)
+                       NOHANDLE
+                       RIDFLD(FVEN-CVENDEDOR)
+                       END-EXEC
+
+           IF EIBRESP > 0 AND NOT = 15
+             IF EIBRESP = 13
+                MOVE 'NUMERO DE EMPRESA NO EXISTE' TO MVEN-MENSAJEO
+             ELSE
+                MOVE 'ERROR EN ACCESO A FICHERO LISTIN' TO MVEN-MENSAJEO
+             END-IF
+           END-IF
+           IF EIBRESP = 15
+              MOVE  ' CLAVE DUPLICADA' TO MVEN-MENSAJEO
+           END-IF
+            MOVE REG-VENTAS TO REG-COLA
+             PERFORM ESCRIBIR-COLA
+             MOVE FVEN-CVENDEDOR TO CVEN-CVENDEDOR
+             PERFORM LISTAR-VENDEDOR.
+
+       MOVER-CAMPOS.
+            MOVE FVEN-CVENDEDOR TO MALTER-VENDEDORO
+            MOVE FVEN-CVENTAS TO MCLAVE-VENTASO
+            MOVE FVEN-CPRODUCTO TO MALTER-PRODUCTOO
+            MOVE FVEN-FECHA TO MALTER-FECHAO
+            MOVE FVEN-KILOS TO MVEN-CANTIDADO
+            MOVE FVEN-CVENDEDOR TO CVEN-CVENDEDOR
+            MOVE FVEN-CVENTAS TO CVEN-CVENTAS
+            MOVE FVEN-CPRODUCTO TO CVEN-CPRODUCTO
+            MOVE FVEN-FECHA TO CVEN-FECHA
+            MOVE FVEN-KILOS TO CVEN-KILOS.
+
+       ULTIMO-REGISTRO.
+            EXEC CICS STARTBR DATASET ('VENTASV')
+                             RIDFLD(WVEN-CVENDEDOR)
+                             GTEQ
+                             NOHANDLE
+                             END-EXEC
+               EXEC CICS READPREV DATASET('VENTASV')
+                                 INTO(REG-VENTAS)
+                                 RIDFLD(WVEN-CVENDEDOR)
+                                 NOHANDLE
+                                 END-EXEC
+
+               IF EIBRESP > 0
+                 IF EIBRESP NOT = 15 AND NOT = 20
+                   MOVE 'ERROR EN READPREV CON FICHERO' TO MVEN-MENSAJEO
+                 END-IF
+               END-IF.
+
+       AVANZAR.
+                  IF CVEN-CITEM > 0
+               EXEC CICS READQ TS QUEUE(TQVE)
+                                 INTO(REG-COLA)
+                                 NEXT
+                                 END-EXEC
+                IF EIBRESP = 15
+                    MOVE 'CLAVE DUPLICADA' TO MVEN-MENSAJEO
+                 END-IF
+                 IF EIBRESP  = 20
+                   MOVE 'FIN DE FICHERO ' TO MVEN-MENSAJEO
+                 END-IF
+                 SUBTRACT 1 FROM CVEN-CITEM
+
+                ELSE
+                  MOVE 'LLEGASTE A L FINAL DE LA COLA' TO MVEN-MENSAJEO
+                  END-IF
+            MOVE REG-COLA TO REG-VEN
+            MOVE ' ADELANTE' TO MVEN-ESTADOO
+            PERFORM MOVER-CAMPOS
+            PERFORM ENVIAR-MAPA.
+       ESCRIBIR-COLA.
+             EXEC CICS WRITEQ TS QUEUE(TQVE)
+             FROM(REG-COLA)
+             NOSUSPEND
+             END-EXEC.
+       MOSTRAR-COLA.
+             EXEC CICS READQ TS QUEUE(TQVE)
+             INTO(REG-COLA)
+             END-EXEC
+             MOVE Q-CVENTAS TO MCLAVE-VENTASO
+             MOVE Q-CVENDEDOR TO MALTER-VENDEDORO.
+       BORRAR-COLA.
+             EXEC CICS DELETEQ TS QUEUE(TQVE)
+             END-EXEC.
+       LISTAR-VENDEDOR.
+              MOVE 0 TO SAL
+              MOVE 0 TO WCUENTA
+              PERFORM UNTIL SAL = 1
+
+                 EXEC CICS READNEXT DATASET('VENTASV')
+                                    INTO(REG-VEN)
+                                    RIDFLD(CVEN-CVENDEDOR)
+                                    NOHANDLE
+                                    END-EXEC
+                IF EIBRESP = 15
+                    MOVE 'CLAVE DUPLICADA' TO MVEN-MENSAJEO
+                 END-IF
+                 IF EIBRESP  = 20
+                   MOVE 'FIN DE FICHERO ' TO MVEN-MENSAJEO
+                 END-IF
+                IF CVEN-CVENDEDOR = 3
+                MOVE REG-VENTAS TO REG-COLA
+                PERFORM ESCRIBIR-COLA
+                ADD 1 TO WCUENTA
+                ELSE MOVE 1 TO SAL
+                END-IF
+                END-PERFORM
+                MOVE WCUENTA TO CVEN-CITEM.

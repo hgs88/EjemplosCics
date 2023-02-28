@@ -1,0 +1,268 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. XVEN04.
+       AUTHOR. H.GAYAN.
+       DATE-WRITTEN. FEB-2014.
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       77 WALTERVEND   PIC X(4).
+       01 REG-VENTAS.
+         02 REG-VEN.
+            03 CLAVES PIC X(6).
+            03 FILLER PIC X(22).
+          02 TODO REDEFINES REG-VEN.
+            03 FVEN-CVENTAS PIC 9(6).
+            03 FVEN-CVENDEDOR PIC 9999.
+            03 FVEN-ALTERVEND REDEFINES FVEN-CVENDEDOR  PIC X(4).
+            03 FVEN-CPRODUCTO PIC 9999.
+            03 FVEN-FECHA PIC 9(8).
+            03 FVEN-KILOS PIC 9(6).
+       77 VALOR-FINAL-VENTAS PIC 9(6).
+       77 WS-INPUTMSG PIC X(13) VALUE 'CESF LOGOFF'.
+       77 WVEN-CVENTAS  PIC X(6) VALUE HIGH-VALUES.
+       77 WVEN-CVENDEDOR  PIC X(4) VALUE HIGH-VALUES.
+       77 WCUENTA PIC 9(4) COMP  VALUE 0.
+       77 WAVANZA PIC 9 VALUE 1.
+       77 CHIVATO PIC X(12).
+       77 SAL PIC 9 VALUE 0.
+       77 WRETROPOS PIC 99 VALUE 18.
+       01 TQVEDEF PIC X(29) VALUE 'VENTASV'.
+       01 TQVE PIC X(29) VALUE 'TQVE'.
+       77 WPOSICION PIC 9(4) COMP VALUE 279.
+
+        COPY MVE0BUS SUPPRESS.
+       COPY DFHAID SUPPRESS.
+       COPY DFHBMSCA SUPPRESS.
+
+       01  COMMAREA.
+           02 REG-INPUT-MAP.
+             03 CMINPUT-AIX PIC 9.
+             03 CMINPUT-SIMCOM PIC X.
+             03 CMINPUT-SIMPLE PIC X(8).
+             03 CMINPUT-COM PIC 9.
+             03 CMINPUT-INTER PIC X(8).
+             03 CMINPUT-INFINTER PIC X(8).
+             03 CMINPUT-FININTER PIC X(8).
+             03 CMINPUT-PARM1 PIC X(8).
+             03 CMINPUT-PARM2 PIC X(8).
+             03 CMINPUT-PARM3 PIC X(8).
+             03 CMINPUT-PARM4 PIC X(8).
+             03 CMINPUT-DATA PIC X(8).
+             03 CMINPUT-DATA1 PIC X(8).
+             03 CMINPUT-DATA2 PIC X(8).
+             03 CMINPUT-DATA3 PIC X(8).
+             03 CPARRAFO PIC 9.
+
+
+
+       LINKAGE SECTION.
+       01  DFHCOMMAREA  PIC X(103).
+       PROCEDURE DIVISION.
+       INICIO.
+           MOVE DFHCOMMAREA TO COMMAREA
+           MOVE LOW-VALUES TO MAP1O
+           IF EIBCALEN = 0
+              MOVE 1 TO CPARRAFO
+              PERFORM ENVIAR-MAPA
+           END-IF
+           MOVE DFHCOMMAREA TO COMMAREA
+           EVALUATE  EIBAID
+                WHEN DFHPF3
+                     EXEC CICS  RETURN TRANSID('CESF')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF4
+                     MOVE 'CESN CICSUSER' TO WS-INPUTMSG
+                    EXEC CICS  RETURN TRANSID('CESN')
+                        INPUTMSG(WS-INPUTMSG)
+                        INPUTMSGLEN(LENGTH OF WS-INPUTMSG)
+                        IMMEDIATE
+                    END-EXEC
+                WHEN DFHPF6
+                  MOVE CMINPUT-AIX TO MMENSAJEO
+                  PERFORM ENVIAR-MAPA
+                WHEN DFHENTER
+                  PERFORM EVALUAR-OPCIONES
+                  PERFORM ENVIAR-MAPA
+
+                WHEN OTHER
+                     PERFORM ENVIAR-MAPA
+            END-EVALUATE.
+
+        RECIBIR-MAPA.
+            EXEC CICS RECEIVE MAP('MAP1')
+                                MAPSET('MVE0BUS')
+                                INTO(MAP1I)
+                                END-EXEC.
+        ENVIAR-MAPA.
+                 EXEC CICS SEND MAP('MAP1')
+                                MAPSET('MVE0BUS')
+                                  FROM(MAP1O)
+                                  ERASE
+                                  ALARM
+                                  CURSOR(WPOSICION)
+                                  FREEKB
+                                  END-EXEC
+                     EXEC CICS RETURN TRANSID('VT02')
+                         COMMAREA(COMMAREA)
+                         LENGTH(LENGTH OF COMMAREA)
+                         END-EXEC.
+        EVALUAR-OPCIONES.
+             PERFORM  RECIBIR-MAPA
+             STRING  'DESPUES DE RECIBIR MAPA   '  CPARRAFO DELIMITED
+             SIZE INTO MMENSAJEO
+             EVALUATE CPARRAFO
+               WHEN 1
+                  MOVE 'OPCION1' TO MMENSAJEO
+                  MOVE MINPUT-AIXI TO CMINPUT-AIX
+                 PERFORM EVALUAR-CLAVE
+                  MOVE 300 TO WPOSICION
+                WHEN 2
+                 MOVE 300 TO WPOSICION
+                  PERFORM EVALUAR-CLAVE
+                  PERFORM EVALUAR-SINCOM
+
+                WHEN 3
+                    PERFORM EVALUAR-CLAVE
+                       IF MINPUT-SIMPLEI > 0
+                          MOVE MINPUT-SIMPLEI TO CMINPUT-SIMPLE
+                       ELSE
+                          MOVE 'Escribe algo TARUGO' TO MMENSAJEO
+                       END-IF
+
+                 WHEN 4
+                     PERFORM EVALUAR-CLAVE
+                     MOVE MINPUT-COMI TO CMINPUT-COM
+                        EVALUATE MINPUT-COMI
+                          WHEN 1
+                           MOVE 1203 TO WPOSICION
+                            PERFORM EVALUAR-SIMPLE
+                          WHEN 2
+                           MOVE 1523 TO WPOSICION
+                           PERFORM EVALUAR-COMPLEJO
+                         END-EVALUATE
+
+               END-EVALUATE.
+
+        EVALUAR-CLAVE.
+            MOVE CMINPUT-AIX TO MMENSAJEO
+                  EVALUATE CMINPUT-AIX
+                       WHEN 1
+                         MOVE 'VENDEDOR' TO MDIS-CLAVEO
+                         MOVE 'ESTOY EN VENDEDOR' TO MMENSAJEO
+                         MOVE 2 TO CPARRAFO
+                       WHEN 2
+                         MOVE 'PRODUCTO' TO MDIS-CLAVEO
+                          MOVE 'ESTOY EN PRODUCTO' TO MMENSAJEO
+                         MOVE 2 TO CPARRAFO
+                       WHEN 3
+                         MOVE 'FECHA' TO MDIS-CLAVEO
+                         MOVE 'ESTOY EN FECHA' TO MMENSAJEO
+                         MOVE 2 TO CPARRAFO
+                    END-EVALUATE.
+
+        EVALUAR-SINCOM.
+               MOVE MINPUT-SIMCOMI TO CMINPUT-SIMCOM
+               MOVE CMINPUT-AIX TO MINPUT-AIXO
+                 EVALUATE CMINPUT-SIMCOM
+                       WHEN 'S'
+                         MOVE DFHBMUNP TO MINPUT-SIMPLEA
+                         MOVE DFHBMPRO TO MINPUT-COMA
+                         MOVE 3 TO CPARRAFO
+                         MOVE 430 TO WPOSICION
+                       WHEN 'C'
+                         MOVE DFHBMUNP TO MINPUT-COMA
+                         MOVE DFHBMPRO TO MINPUT-SIMPLEA
+                         MOVE 4 TO CPARRAFO
+                         MOVE 803 TO WPOSICION
+                      END-EVALUATE.
+        EVALUAR-SIMPLE.
+              MOVE CMINPUT-SIMCOM TO MINPUT-SIMCOMO
+              MOVE CMINPUT-AIX TO MINPUT-AIXO
+              MOVE DFHBMUNP TO MINPUT-INTERA
+                           MOVE DFHBMUNP TO MINPUT-INFINTERA
+                           MOVE DFHBMUNP TO MINPUT-FININTERA
+
+                           MOVE DFHBMPRO TO MINPUT-PARM1A
+                           MOVE DFHBMPRO TO MINPUT-DATAA
+                           MOVE DFHBMPRO TO MINPUT-PARM2A
+                           MOVE DFHBMPRO TO MINPUT-DATA1A
+                           MOVE DFHBMPRO TO MINPUT-PARM3A
+                           MOVE DFHBMPRO TO MINPUT-DATA2A
+                           MOVE DFHBMPRO TO MINPUT-PARM4A
+                           MOVE DFHBMPRO TO MINPUT-DATA3A
+
+                         IF MINPUT-INTERI > 0
+                          MOVE MINPUT-INTERI TO CMINPUT-INTER
+                         ELSE
+                          MOVE 'Escribe algo TARUGO' TO MMENSAJEO
+                         END-IF
+
+                         IF MINPUT-INFINTERI > 0
+                          MOVE MINPUT-INFINTERI TO CMINPUT-INFINTER
+                         ELSE
+                          MOVE 'Escribe algo TARUGO' TO MMENSAJEO
+                         END-IF
+
+                         IF MINPUT-FININTERI > 0
+                          MOVE MINPUT-FININTERI TO CMINPUT-FININTER
+                         ELSE
+                          MOVE 'Escribe algo TARUGO' TO MMENSAJEO
+                         END-IF.
+        EVALUAR-COMPLEJO.
+                MOVE CMINPUT-SIMCOM TO MINPUT-SIMCOMO
+                MOVE CMINPUT-AIX TO MINPUT-AIXO
+                MOVE CMINPUT-COM TO MINPUT-COMO
+                MOVE DFHBMPRO TO MINPUT-INTERA
+                MOVE DFHBMPRO TO MINPUT-INFINTERA
+                MOVE DFHBMPRO TO MINPUT-FININTERA
+                MOVE DFHBMUNP TO MINPUT-PARM1A
+                MOVE DFHBMUNP TO MINPUT-DATAA
+                MOVE DFHBMUNP TO MINPUT-PARM2A
+                MOVE DFHBMUNP TO MINPUT-DATA1A
+                MOVE DFHBMUNP TO MINPUT-PARM3A
+                MOVE DFHBMUNP TO MINPUT-DATA2A
+                MOVE DFHBMUNP TO MINPUT-PARM4A
+                MOVE DFHBMUNP TO MINPUT-DATA3A
+                 IF MINPUT-PARM1I > 0
+                   MOVE MINPUT-PARM1I TO CMINPUT-PARM1
+                   IF MINPUT-DATAI > 0
+                    MOVE MINPUT-DATAI TO CMINPUT-DATA
+                   ELSE MOVE 'Escribe algo TARUGO' TO MMENSAJEO
+                   END-IF
+                 ELSE MOVE 'Escribe UN PARAMETRO TARUGO' TO MMENSAJEO
+                 END-IF
+
+                 IF MINPUT-PARM2I > 0
+                    MOVE MINPUT-PARM2I TO CMINPUT-PARM2
+                    IF MINPUT-DATA1I > 0
+                     MOVE MINPUT-DATA1I TO CMINPUT-DATA1
+                    ELSE MOVE 'Escribe algo TARUGO' TO MMENSAJEO
+                    END-IF
+                 ELSE MOVE 'Escribe UN PARAMETRO TARUGO' TO MMENSAJEO
+                 END-IF
+
+                 IF MINPUT-PARM3I > 0
+                  MOVE MINPUT-PARM3I TO CMINPUT-PARM3
+                  IF MINPUT-DATA2I > 0
+                    MOVE MINPUT-DATA2I TO CMINPUT-DATA2
+                    ELSE MOVE 'Escribe algo TARUGO' TO MMENSAJEO
+                  END-IF
+                  ELSE MOVE 'Escribe UN PARAMETRO TARUGO' TO MMENSAJEO
+                  END-IF
+
+                  IF MINPUT-PARM4I > 0
+                    MOVE MINPUT-PARM4I TO CMINPUT-PARM3
+                    IF MINPUT-DATA3I > 0
+                     MOVE MINPUT-DATA3I TO CMINPUT-DATA3
+                    ELSE   MOVE 'Escribe algo TARUGO' TO MMENSAJEO
+                  END-IF
+                  ELSE MOVE 'Escribe UN PARAMETRO TARUGO' TO MMENSAJEO
+                  END-IF.
+
+
+
+

@@ -1,0 +1,368 @@
+***************************************************************
+*
+* MVE0030
+*
+* Creado: 21-ene-2014 15:46:14 GMT+01:00
+*
+* Generado por: BMS Map Editor
+*
+* Descripci¢n:
+* SELECCION VENTAS
+*
+***************************************************************
+MVE0030  DFHMSD TYPE=MAP,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,           *
+               CTRL=FREEKB,EXTATT=YES,TERM=3270-2,TIOAPFX=YES,         *
+               MAPATTS=(COLOR,HILIGHT),                                *
+               DSATTS=(COLOR,HILIGHT)
+MVE003A  DFHMDI SIZE=(24,80),CURSLOC=YES,                              *
+               COLUMN=1,                                               *
+               LINE=1,                                                 *
+               MAPATTS=(COLOR,HILIGHT),                                *
+               DSATTS=(COLOR,HILIGHT)
+         DFHMDF POS=(1,1),LENGTH=8,INITIAL='MVE003',                   *
+               ATTRB=(ASKIP,DRK),HILIGHT=OFF,COLOR=PINK
+         DFHMDF POS=(1,27),LENGTH=19,INITIAL='SELECCION VENTAS',       *
+               ATTRB=(ASKIP,DRK),HILIGHT=OFF,COLOR=PINK
+MVE03-FECHA DFHMDF POS=(1,67),LENGTH=11,                               *
+               ATTRB=(PROT,DRK),HILIGHT=OFF,COLOR=PINK
+         DFHMDF POS=(3,9),LENGTH=15,INITIAL='     FECHA',              *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(3,25),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(3,44),LENGTH=33,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(3,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(4,9),LENGTH=4,INITIAL=' AA',                      *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(4,14),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(4,16),LENGTH=2,INITIAL='MM',                      *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(4,19),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(4,21),LENGTH=2,INITIAL='DD',                      *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(4,24),LENGTH=0,                                   *
+               ATTRB=ASKIP
+MVE03-CAB-CODIGO DFHMDF POS=(4,44),LENGTH=4,INITIAL='COD.',            *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(4,49),LENGTH=28,INITIAL='       DESCRIPCION',     *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(4,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(5,2),LENGTH=6,INITIAL='DESDE',                    *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=TURQUOISE
+MVE03-FECHA-INF-AA DFHMDF POS=(5,9),LENGTH=4,                          *
+               ATTRB=(UNPROT,IC,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
+         DFHMDF POS=(5,14),LENGTH=0,                                   *
+               ATTRB=ASKIP
+MVE03-FECHA-INF-MM DFHMDF POS=(5,16),LENGTH=2,                         *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
+         DFHMDF POS=(5,19),LENGTH=0,                                   *
+               ATTRB=ASKIP
+MVE03-FECHA-INF-DD DFHMDF POS=(5,21),LENGTH=2,                         *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
+         DFHMDF POS=(5,24),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+MVE03-POS DFHMDF POS=(5,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(5,41),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD16 DFHMDF POS=(6,39),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,41),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD17 DFHMDF POS=(7,39),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,41),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD18 DFHMDF POS=(8,39),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,41),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD19 DFHMDF POS=(9,39),LENGTH=1,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,41),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD20 DFHMDF POS=(10,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD21 DFHMDF POS=(11,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD22 DFHMDF POS=(12,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD23 DFHMDF POS=(13,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD24 DFHMDF POS=(14,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD25 DFHMDF POS=(15,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD26 DFHMDF POS=(16,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD27 DFHMDF POS=(17,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD28 DFHMDF POS=(18,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD29 DFHMDF POS=(19,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD30 DFHMDF POS=(20,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-POS                       MVE03-POS
+DFHFLD31 DFHMDF POS=(21,39),LENGTH=1,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,41),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+MVE03-HELP-CODIGO DFHMDF POS=(5,43),LENGTH=4,                          *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(5,48),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD   DFHMDF POS=(6,43),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,48),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD1  DFHMDF POS=(7,43),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,48),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD2  DFHMDF POS=(8,43),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,48),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD3  DFHMDF POS=(9,43),LENGTH=4,                                   *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,48),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD4  DFHMDF POS=(10,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD5  DFHMDF POS=(11,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD6  DFHMDF POS=(12,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD7  DFHMDF POS=(13,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD8  DFHMDF POS=(14,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD9  DFHMDF POS=(15,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD10 DFHMDF POS=(16,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD11 DFHMDF POS=(17,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD12 DFHMDF POS=(18,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD13 DFHMDF POS=(19,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD14 DFHMDF POS=(20,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-CODIGO               MVE03-HELP-CODIGO
+DFHFLD15 DFHMDF POS=(21,43),LENGTH=4,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,48),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+MVE03-HELP-DESCRIPCION DFHMDF POS=(5,49),LENGTH=28,                    *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(5,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD32 DFHMDF POS=(6,49),LENGTH=28,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(6,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD33 DFHMDF POS=(7,49),LENGTH=28,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(7,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD34 DFHMDF POS=(8,49),LENGTH=28,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(8,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD35 DFHMDF POS=(9,49),LENGTH=28,                                  *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(9,78),LENGTH=0,                                   *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD36 DFHMDF POS=(10,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(10,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD37 DFHMDF POS=(11,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(11,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD38 DFHMDF POS=(12,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(12,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD39 DFHMDF POS=(13,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(13,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD40 DFHMDF POS=(14,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(14,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD41 DFHMDF POS=(15,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(15,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD42 DFHMDF POS=(16,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(16,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD43 DFHMDF POS=(17,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(17,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD44 DFHMDF POS=(18,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(18,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD45 DFHMDF POS=(19,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(19,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD46 DFHMDF POS=(20,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(20,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+* MVE03-HELP-DESCRIPCION          MVE03-HELP-DESCRIPCION
+DFHFLD47 DFHMDF POS=(21,49),LENGTH=28,                                 *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=GREEN
+         DFHMDF POS=(21,78),LENGTH=0,                                  *
+               ATTRB=ASKIP
+         DFHMDF POS=(16,1),LENGTH=25,INITIAL='          GRUPO',        *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(16,27),LENGTH=0,                                  *
+               ATTRB=ASKIP
+         DFHMDF POS=(13,1),LENGTH=25,INITIAL='         PRODUCTO',      *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(13,27),LENGTH=0,                                  *
+               ATTRB=ASKIP
+         DFHMDF POS=(10,1),LENGTH=35,INITIAL='             VENDEDOR',  *
+               ATTRB=(PROT,NORM),HILIGHT=UNDERLINE,COLOR=TURQUOISE
+         DFHMDF POS=(10,37),LENGTH=0,                                  *
+               ATTRB=ASKIP
+         DFHMDF POS=(7,2),LENGTH=6,INITIAL='HASTA',                    *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=TURQUOISE
+MVE03-FECHA-SUP-AA DFHMDF POS=(7,9),LENGTH=4,                          *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
+         DFHMDF POS=(7,14),LENGTH=0,                                   *
+               ATTRB=ASKIP
+MVE03-FECHA-SUP-MM DFHMDF POS=(7,16),LENGTH=2,                         *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
+         DFHMDF POS=(7,19),LENGTH=0,                                   *
+               ATTRB=ASKIP
+MVE03-FECHA-SUP-DD DFHMDF POS=(7,21),LENGTH=2,                         *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
+         DFHMDF POS=(7,24),LENGTH=0,                                   *
+               ATTRB=ASKIP
+MVE03-NOM-VENDEDOR DFHMDF POS=(11,1),LENGTH=35,                        *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
+MVE03-NOM-PRODUCTO DFHMDF POS=(14,1),LENGTH=25,                        *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
+         DFHMDF POS=(14,27),LENGTH=0,                                  *
+               ATTRB=ASKIP
+MVE03-NOM-GRUPO DFHMDF POS=(17,1),LENGTH=25,                           *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
+         DFHMDF POS=(17,27),LENGTH=0,                                  *
+               ATTRB=ASKIP
+MVE03-MENSA DFHMDF POS=(23,1),LENGTH=78,                               *
+               ATTRB=(PROT,NORM),HILIGHT=OFF,COLOR=NEUTRAL
+         DFHMDF POS=(24,1),LENGTH=77,                                  *
+               INITIAL='F1-BUSCAR CAMPOS   F2- EJECUTAR  F3-SALIR  F7-A*
+               TRAS  F8-AVAN  INTRO-SELCIONAR',                        *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=YELLOW
+         DFHMDF POS=(11,37),LENGTH=0,                                  *
+               ATTRB=ASKIP
+MVE0030  DFHMSD TYPE=FINAL
+         END
